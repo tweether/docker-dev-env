@@ -40,7 +40,10 @@ cd gcc-7.5.0/ &&\
 mkdir build &&\
 cd build/ &&\
 ../configure  --enable-checking=release --enable-languages=c,c++ --disable-multilib &&\
-make -j8 && make install
+make -j8 && make install &&\
+cp /usr/local/lib64/libstdc++.so.6.0.24 /usr/lib64/ &&\
+rm /usr/lib64/libstdc++.so.6 -y &&\
+ln -s /usr/lib64/libstdc++.so.6.0.24 /usr/lib64/libstdc++.so.6
 
 #配置启动脚本(非必须)
 #ADD run.sh /run.sh
