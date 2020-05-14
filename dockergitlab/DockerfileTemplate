@@ -1,0 +1,16 @@
+#语法说明https://www.runoob.com/docker/docker-dockerfile.html
+#基于centos镜像
+FROM dev_os:v4
+
+#维护人的信息
+MAINTAINER dede <dengnianpeng@ztgame.com>
+
+#开启22端口
+EXPOSE 22
+
+#配置gitlab-runner
+RUN curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh | bash &&\
+ yum install gitlab-runner -y && pip3 install gcovr mkdocs
+
+#当启动容器时执行的脚本文件
+#ENTRYPOINT ["gitlab-runner start"]
