@@ -24,13 +24,13 @@ cp epel-7.repo /etc/yum.repos.d/epel.repo
 
 #安装软件包
 RUN yum install gcc gcc-c++ make gdb valgrind git216 cmake3 -y &&\
-yum install MariaDB mariadb-devel mariadb-libs rh-redis5 openssl openssh openssh-server openssh-clients -y
-
+yum install MariaDB mariadb-devel mariadb-libs rh-redis5 openssl openssh openssh-server openssh-clients -y &&\
+build-essential rsync ninja-build zip unzip -y &&\
 RUN yum install libiconv libuuid libuuid-devel libunwind libunwind-devel lcov cppcheck -y &&\
 yum install passwd tmux htop bzip2 net-tools vim -y &&\
 ln -s /bin/cmake3 /bin/cmake && ln -s /bin/ctest3 /bin/ctest && ln -s /bin/pip3 /bin/pip &&\
 pip3 install conan cpplint &&\
-sed 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/g' /etc/ssh/sshd_config
+sed -i 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/g' /etc/ssh/sshd_config
 
 #gcc7.5编译安装
 RUN wget http://mirror.hust.edu.cn/gnu/gcc/gcc-7.5.0/gcc-7.5.0.tar.gz &&\
@@ -39,7 +39,7 @@ cd gcc-7.5.0/ &&\
 ./contrib/download_prerequisites &&\
 mkdir build &&\
 cd build/ &&\
-../configure  --enable-checking=release --enable-languages=c,c++ --disable-multilib &&\
+../configure  --enable-checking=release --enable-languages=c,c++ --disable-multilib --enable-libstdcxx-time=rt &&\
 make -j8 && make install &&\
 cp /usr/local/lib64/libstdc++.so.6.0.24 /usr/lib64/ &&\
 rm /usr/lib64/libstdc++.so.6 -y &&\
